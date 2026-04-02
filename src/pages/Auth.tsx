@@ -13,7 +13,12 @@ import { toast } from 'sonner';
 
 const signInSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string()
+    .min(12, 'Password must be at least 12 characters')
+    .regex(
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+      'Must include uppercase, lowercase, number, and special character (@$!%*?&)'
+    ),
 });
 
 const signUpSchema = signInSchema.extend({
@@ -126,7 +131,7 @@ export default function Auth() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input type="password" placeholder="••••••••" minLength={12} pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{12,}" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -139,7 +144,7 @@ export default function Auth() {
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input type="password" placeholder="••••••••" minLength={12} pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{12,}" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
